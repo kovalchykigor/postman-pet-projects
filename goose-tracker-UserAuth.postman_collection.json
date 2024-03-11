@@ -1,0 +1,500 @@
+{
+	"info": {
+		"_postman_id": "1cfdfb7a-d10f-4611-86b1-3321801c8dcc",
+		"name": "goose-tracker-UserAuth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20834698",
+		"_collection_link": "https://universal-zodiac-938112.postman.co/workspace/qa~2e41c135-f8c6-40cc-91b7-46c79b9c1994/collection/20834698-1cfdfb7a-d10f-4611-86b1-3321801c8dcc?action=share&source=collection_link&creator=20834698"
+	},
+	"item": [
+		{
+			"name": "User register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"email\" , jsonData.email);\r",
+							"pm.environment.set(\"\")"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Igor3\",\r\n  \"email\": \"Igor3@gmail.com\",\r\n  \"password\": \"qwerty123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://goose-tracker-backend.p.goit.global/user/register",
+					"protocol": "https",
+					"host": [
+						"goose-tracker-backend",
+						"p",
+						"goit",
+						"global"
+					],
+					"path": [
+						"user",
+						"register"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UserLogin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"\r",
+							"pm.environment.set(\"user_name\" , jsonData.name);\r",
+							"\r",
+							"pm.environment.set(\"id_temp\" , jsonData.id);\r",
+							"\r",
+							"pm.environment.set(\"token\", jsonData.data.accessToken);\r",
+							"\r",
+							"pm.environment.set(\"email\", jsonData.email);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"Igor3@gmail.com\",\r\n  \"password\": \"qwerty123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://goose-tracker-backend.p.goit.global/user/login",
+					"protocol": "https",
+					"host": [
+						"goose-tracker-backend",
+						"p",
+						"goit",
+						"global"
+					],
+					"path": [
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user/logout",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://goose-tracker-backend.p.goit.global/user/logout",
+					"protocol": "https",
+					"host": [
+						"goose-tracker-backend",
+						"p",
+						"goit",
+						"global"
+					],
+					"path": [
+						"user",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user/refresh tokens",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "accessToken",
+						"value": "{{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://goose-tracker-backend.p.goit.global/user/refresh",
+					"protocol": "https",
+					"host": [
+						"goose-tracker-backend",
+						"p",
+						"goit",
+						"global"
+					],
+					"path": [
+						"user",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UserInfo",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://goose-tracker-backend.p.goit.global/user/info",
+					"protocol": "https",
+					"host": [
+						"goose-tracker-backend",
+						"p",
+						"goit",
+						"global"
+					],
+					"path": [
+						"user",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UserUpdate",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							"\r",
+							"pm.variables.set(\"_id\" , pm.environment.id_temp);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n \"_id\": \"{{user_id}}\",\r\n  \"phone\": 38094383377,\r\n  \"birthday\": \"17.05.1988\",\r\n  \"skype\": \"One12\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://goose-tracker-backend.p.goit.global/user/update",
+					"protocol": "https",
+					"host": [
+						"goose-tracker-backend",
+						"p",
+						"goit",
+						"global"
+					],
+					"path": [
+						"user",
+						"update"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{id}}",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TaskByMonth",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://goose-tracker-backend.p.goit.global/task/by-month/?year=2023&month=10",
+					"protocol": "https",
+					"host": [
+						"goose-tracker-backend",
+						"p",
+						"goit",
+						"global"
+					],
+					"path": [
+						"task",
+						"by-month",
+						""
+					],
+					"query": [
+						{
+							"key": "year",
+							"value": "2023"
+						},
+						{
+							"key": "month",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TaskCreate",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"2023-09-31\",\r\n  \"start\": \"9-00\",\r\n  \"end\": \"14-00\",\r\n  \"priority\": \"low\",\r\n  \"category\": \"to-do\",\r\n  \"date\": \"2023-09-31\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://goose-tracker-backend.p.goit.global/task/",
+					"protocol": "https",
+					"host": [
+						"goose-tracker-backend",
+						"p",
+						"goit",
+						"global"
+					],
+					"path": [
+						"task",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TaskDelete",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "id",
+						"value": "64c2db896eb12444f2ae8a24",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://goose-tracker-backend.p.goit.global/task/64c7708c6eb12444f2ae9f2c",
+					"protocol": "https",
+					"host": [
+						"goose-tracker-backend",
+						"p",
+						"goit",
+						"global"
+					],
+					"path": [
+						"task",
+						"64c7708c6eb12444f2ae9f2c"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "64c2db896eb12444f2ae8a24",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TaskPut",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"2023-09-31\",\r\n  \"start\": \"9-00\",\r\n  \"end\": \"14-00\",\r\n  \"priority\": \"low\",\r\n  \"category\": \"to-do\",\r\n  \"date\": \"2023-09-31\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://goose-tracker-backend.p.goit.global/task/64c7c3e66eb12444f2aea100",
+					"protocol": "https",
+					"host": [
+						"goose-tracker-backend",
+						"p",
+						"goit",
+						"global"
+					],
+					"path": [
+						"task",
+						"64c7c3e66eb12444f2aea100"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "64c2dca26eb12444f2ae8a5e",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetReview",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://goose-tracker-backend.p.goit.global/review",
+					"protocol": "https",
+					"host": [
+						"goose-tracker-backend",
+						"p",
+						"goit",
+						"global"
+					],
+					"path": [
+						"review"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "64c2dca26eb12444f2ae8a5e",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

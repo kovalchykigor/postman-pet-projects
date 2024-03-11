@@ -1,0 +1,1019 @@
+{
+	"info": {
+		"_postman_id": "a25db05a-d805-4257-9bdd-4ac6b6ca278e",
+		"name": "so-yummy-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20834698",
+		"_collection_link": "https://universal-zodiac-938112.postman.co/workspace/qa~2e41c135-f8c6-40cc-91b7-46c79b9c1994/collection/20834698-a25db05a-d805-4257-9bdd-4ac6b6ca278e?action=share&source=collection_link&creator=20834698"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Sign Up",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"// Generate a random username\r",
+									"var UserName = \"user\" + Math.random().toString(36).substring(2, 10);\r",
+									"\r",
+									"\r",
+									"// Generate a random password\r",
+									"var  Password = \"1M\" + Math.random().toString(36).substring(2, 14);\r",
+									"\r",
+									"\r",
+									"// Generate a random email address\r",
+									"var Email = UserName + \"@gmail.com\";\r",
+									"\r",
+									"\r",
+									"// Set collection variables\r",
+									"pm.collectionVariables.set(\"UserName\", UserName);\r",
+									"pm.collectionVariables.set(\"_Password\", Password);\r",
+									"pm.collectionVariables.set(\"Email\", Email);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"{{UserName}}\",\r\n  \"email\": \"{{Email}}\",\r\n  \"password\": \"{{Password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/users/signup",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.collectionVariables.set(\"Token\" , jsonData.user.token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"{{Email}}\",\r\n    \"password\":\"{{Password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/users/login",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LogOut",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/users/logout",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserInfo",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/users/current",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"current"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateUserInfo",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "NewUserName",
+									"type": "text"
+								},
+								{
+									"key": "img",
+									"type": "file",
+									"src": "/C:/Users/koval/Desktop/завантаження.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/users/update",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"update"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recipes",
+			"item": [
+				{
+					"name": "Full Category List",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/recipes/category-list",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"recipes",
+								"category-list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4 Categories with Recipes",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/recipes/main-page?query=4",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"recipes",
+								"main-page"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recipes by Category",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/recipes/category/beef",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"recipes",
+								"category",
+								"beef"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recipe by ID",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/recipes/640cd5ac2d9fecf12e889833",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"recipes",
+								"640cd5ac2d9fecf12e889833"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ingredients",
+			"item": [
+				{
+					"name": "Get All Ingredients",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/ingredients/list",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ingredients",
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Popular Recipe",
+			"item": [
+				{
+					"name": "Popular Recipe",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/popular-recipe?query=4",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"popular-recipe"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Shopping-list",
+			"item": [
+				{
+					"name": "Shopping-list",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/shopping-list",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"shopping-list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add to Shopping-list",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"ing\": [\r\n    {\r\n      \"id\": \"640cd5ac2d9fecf12e88980a\",\r\n      \"measure\": \"350g\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/shopping-list/add",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"shopping-list",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove from ShopingList",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"shoppingListIng\": \"652cf093b8493b5b0d810d1e\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/shopping-list/remove",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"shopping-list",
+								"remove"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Search",
+			"item": [
+				{
+					"name": "Recipe Search",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/search?page=1&limit=20&query=soup&type=title",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"search"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "query",
+									"value": "soup"
+								},
+								{
+									"key": "type",
+									"value": "title"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Favorites",
+			"item": [
+				{
+					"name": "Get Favorite Recipes",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/favorite/?page=1",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"favorite",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add to Favorite",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"recipe\": \"640cd5ac2d9fecf12e88980a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/favorite/add",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"favorite",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove from Favorites",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"recipe\": \"640cd5ac2d9fecf12e88980a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/favorite/remove",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"favorite",
+								"remove"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Subscribe",
+			"item": [
+				{
+					"name": "Subscribe",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\":\"{{Email}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/subscribe",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"subscribe"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OwnRecipes",
+			"item": [
+				{
+					"name": "Get a list of recipes",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/ownRecipes",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ownRecipes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add New Recipe",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "category",
+									"value": "Chicken",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "A hearty breakfast meal consisting of eggs, bacon, sausage, baked beans, grilled tomato, and toast. It is a popular breakfast in the United Kingdom.",
+									"type": "text"
+								},
+								{
+									"key": "img",
+									"type": "file",
+									"src": "/C:/Users/koval/Desktop/завантаження.jpeg"
+								},
+								{
+									"key": "ingredients[0][id]",
+									"value": "640cd5ac2d9fecf12e889863",
+									"type": "text"
+								},
+								{
+									"key": "instructions",
+									"value": "Grind the cashew, poppy seeds and cumin seeds into a smooth paste...",
+									"type": "text"
+								},
+								{
+									"key": "time",
+									"value": "40",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "English Breakfast",
+									"type": "text"
+								},
+								{
+									"key": "ingredients[0][measure]",
+									"value": "15",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/ownRecipes/",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ownRecipes",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Recipe",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "host",
+								"value": "backend-soyummy.onrender.com",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "https://backend-soyummy.onrender.com/api/ownRecipes/652d2141daa84a254397c888?page=1",
+							"protocol": "https",
+							"host": [
+								"backend-soyummy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ownRecipes",
+								"652d2141daa84a254397c888"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "UserName",
+			"value": ""
+		},
+		{
+			"key": "Password",
+			"value": ""
+		},
+		{
+			"key": "Email",
+			"value": ""
+		},
+		{
+			"key": "Token",
+			"value": ""
+		}
+	]
+}

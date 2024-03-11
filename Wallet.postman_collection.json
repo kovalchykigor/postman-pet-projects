@@ -1,0 +1,564 @@
+{
+	"info": {
+		"_postman_id": "e0b5fd37-6e0d-4b25-bded-b0e58837986b",
+		"name": "Wallet",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20834698",
+		"_collection_link": "https://universal-zodiac-938112.postman.co/workspace/qa~2e41c135-f8c6-40cc-91b7-46c79b9c1994/collection/20834698-e0b5fd37-6e0d-4b25-bded-b0e58837986b?action=share&source=collection_link&creator=20834698"
+	},
+	"item": [
+		{
+			"name": "Auth Controller",
+			"item": [
+				{
+					"name": "Sign Up",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Generate a random username\r",
+									"var UserName = \"user\" + Math.random().toString(36).substring(2, 10);\r",
+									"\r",
+									"\r",
+									"// Generate a random password\r",
+									"var  Password = Math.random().toString(36).substring(2, 14);\r",
+									"\r",
+									"\r",
+									"// Generate a random email address\r",
+									"var Email = UserName + \"@gmail.com\";\r",
+									"\r",
+									"pm.collectionVariables.set(\"UserName\" , UserName);\r",
+									"pm.collectionVariables.set(\"Password\" , Password);\r",
+									"pm.collectionVariables.set(\"Email\" , Email);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.collectionVariables.set(\"UserId\" , jsonData.user.id);\r",
+									"pm.collectionVariables.set(\"Token\" , jsonData.token);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"{{UserName}}\",\r\n  \"email\": \"{{Email}}\",\r\n  \"password\": \"{{Password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://wallet.goit.ua/api/auth/sign-up",
+							"protocol": "https",
+							"host": [
+								"wallet",
+								"goit",
+								"ua"
+							],
+							"path": [
+								"api",
+								"auth",
+								"sign-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Log In",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"\r",
+									"pm.collectionVariables.set(\"Token\" , jsonData.token);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{Email}}\",\r\n  \"password\": \"{{Password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://wallet.goit.ua/api/auth/sign-in",
+							"protocol": "https",
+							"host": [
+								"wallet",
+								"goit",
+								"ua"
+							],
+							"path": [
+								"api",
+								"auth",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Log Out",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://wallet.goit.ua/api/auth/sign-out",
+							"protocol": "https",
+							"host": [
+								"wallet",
+								"goit",
+								"ua"
+							],
+							"path": [
+								"api",
+								"auth",
+								"sign-out"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Controller",
+			"item": [
+				{
+					"name": "Get current user info",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://wallet.goit.ua/api/users/current",
+							"protocol": "https",
+							"host": [
+								"wallet",
+								"goit",
+								"ua"
+							],
+							"path": [
+								"api",
+								"users",
+								"current"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transaction Categories",
+			"item": [
+				{
+					"name": "Get Transaction categories id's",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"// Перевірка, чи відповідь містить дані\r",
+									"if (jsonData && jsonData.length > 0) {\r",
+									"    for (var i = 0; i < jsonData.length; i++) {\r",
+									"        var id = jsonData[i].id;\r",
+									"        var name = jsonData[i].name;\r",
+									"        var type = jsonData[i].type;\r",
+									"\r",
+									"        // Створення змінних папки\r",
+									"        pm.collectionVariables.set(\"Category_Id_\" + i, id);\r",
+									"        pm.collectionVariables.set(\"Category_Name_\" + i, name);\r",
+									"        pm.collectionVariables.set(\"Category_Type_\" + i, type);\r",
+									"    }\r",
+									"\r",
+									"    console.log(\"ID категорій були успішно записані в змінні папки.\");\r",
+									"} else {\r",
+									"    console.log(\"Відповідь не містить дані.\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://wallet.goit.ua/api/transaction-categories",
+							"protocol": "https",
+							"host": [
+								"wallet",
+								"goit",
+								"ua"
+							],
+							"path": [
+								"api",
+								"transaction-categories"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transactions Controller",
+			"item": [
+				{
+					"name": "Create new transaction",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"console.log(\"i_start =\", pm.collectionVariables.get(\"i\"));\r",
+									"\r",
+									"// Get collection variables\r",
+									"var categoryId = pm.collectionVariables.get(\"Category_Id_\" + pm.collectionVariables.get(\"i\"));\r",
+									"var categoryType = pm.collectionVariables.get(\"Category_Type_\" + pm.collectionVariables.get(\"i\"));\r",
+									"\r",
+									"console.log(categoryId);\r",
+									"console.log(categoryType);\r",
+									"\r",
+									"//Increment\r",
+									"pm.collectionVariables.set(\"i\" , parseInt(pm.collectionVariables.get(\"i\"))+1 );\r",
+									"\r",
+									"console.log(\"i_finish = \", pm.collectionVariables.get(\"i\"));\r",
+									"\r",
+									"// Temp variables for json body\r",
+									"pm.collectionVariables.set(\"currentCategoryId\", categoryId);\r",
+									"pm.collectionVariables.set(\"currentCategoryType\", categoryType);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"transactionDate\": \"2023-10-18\",\r\n  \"type\": \"{{currentCategoryType}}\",\r\n  \"categoryId\": \"{{currentCategoryId}}\",\r\n  \"comment\": \"tratata\",\r\n  \"amount\": 0.0000033333332e+81\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://wallet.goit.ua/api/transactions",
+							"protocol": "https",
+							"host": [
+								"wallet",
+								"goit",
+								"ua"
+							],
+							"path": [
+								"api",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "UserName",
+			"value": ""
+		},
+		{
+			"key": "Password",
+			"value": ""
+		},
+		{
+			"key": "Email",
+			"value": ""
+		},
+		{
+			"key": "UserId",
+			"value": ""
+		},
+		{
+			"key": "Token",
+			"value": ""
+		},
+		{
+			"key": "Category_Id_0",
+			"value": ""
+		},
+		{
+			"key": "Category_Name_0",
+			"value": ""
+		},
+		{
+			"key": "Category_Type_0",
+			"value": ""
+		},
+		{
+			"key": "Category_Id_1",
+			"value": ""
+		},
+		{
+			"key": "Category_Name_1",
+			"value": ""
+		},
+		{
+			"key": "Category_Type_1",
+			"value": ""
+		},
+		{
+			"key": "Category_Id_2",
+			"value": ""
+		},
+		{
+			"key": "Category_Name_2",
+			"value": ""
+		},
+		{
+			"key": "Category_Type_2",
+			"value": ""
+		},
+		{
+			"key": "Category_Id_3",
+			"value": ""
+		},
+		{
+			"key": "Category_Name_3",
+			"value": ""
+		},
+		{
+			"key": "Category_Type_3",
+			"value": ""
+		},
+		{
+			"key": "Category_Id_4",
+			"value": ""
+		},
+		{
+			"key": "Category_Name_4",
+			"value": ""
+		},
+		{
+			"key": "Category_Type_4",
+			"value": ""
+		},
+		{
+			"key": "Category_Id_5",
+			"value": ""
+		},
+		{
+			"key": "Category_Name_5",
+			"value": ""
+		},
+		{
+			"key": "Category_Type_5",
+			"value": ""
+		},
+		{
+			"key": "Category_Id_6",
+			"value": ""
+		},
+		{
+			"key": "Category_Name_6",
+			"value": ""
+		},
+		{
+			"key": "Category_Type_6",
+			"value": ""
+		},
+		{
+			"key": "Category_Id_7",
+			"value": ""
+		},
+		{
+			"key": "Category_Name_7",
+			"value": ""
+		},
+		{
+			"key": "Category_Type_7",
+			"value": ""
+		},
+		{
+			"key": "Category_Id_8",
+			"value": ""
+		},
+		{
+			"key": "Category_Name_8",
+			"value": ""
+		},
+		{
+			"key": "Category_Type_8",
+			"value": ""
+		},
+		{
+			"key": "Category_Id_9",
+			"value": ""
+		},
+		{
+			"key": "Category_Name_9",
+			"value": ""
+		},
+		{
+			"key": "Category_Type_9",
+			"value": ""
+		},
+		{
+			"key": "Category_Id_10",
+			"value": ""
+		},
+		{
+			"key": "Category_Name_10",
+			"value": ""
+		},
+		{
+			"key": "Category_Type_10",
+			"value": ""
+		},
+		{
+			"key": "currentCategoryId",
+			"value": ""
+		},
+		{
+			"key": "currentCategoryType",
+			"value": ""
+		},
+		{
+			"key": "i",
+			"value": "0"
+		}
+	]
+}

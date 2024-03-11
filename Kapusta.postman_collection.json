@@ -1,0 +1,597 @@
+{
+	"info": {
+		"_postman_id": "15ed873f-a16f-4d58-8bca-89f6e521706f",
+		"name": "Kapusta",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20834698",
+		"_collection_link": "https://universal-zodiac-938112.postman.co/workspace/qa~2e41c135-f8c6-40cc-91b7-46c79b9c1994/collection/20834698-15ed873f-a16f-4d58-8bca-89f6e521706f?action=share&source=collection_link&creator=20834698"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Generate a random username\r",
+									"var UserName = \"user\" + Math.random().toString(36).substring(2, 10);\r",
+									"\r",
+									"\r",
+									"// Generate a random password\r",
+									"var  Password = Math.random().toString(36).substring(2, 14);\r",
+									"\r",
+									"\r",
+									"// Generate a random email address\r",
+									"var Email = UserName + \"@gmail.com\";\r",
+									"\r",
+									"pm.collectionVariables.set(\"UserName\" , UserName);\r",
+									"pm.collectionVariables.set(\"Password\" , Password);\r",
+									"pm.collectionVariables.set(\"Email\" , Email);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.collectionVariables.set(\"UserId\", jsonData.id)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{Email}}\",\r\n  \"password\": \"{{Password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://kapusta-backend.goit.global/auth/register",
+							"protocol": "https",
+							"host": [
+								"kapusta-backend",
+								"goit",
+								"global"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"jsonData = pm.response.json();\r",
+									"\r",
+									"pm.collectionVariables.set(\"accessToken\" ,jsonData.accessToken);\r",
+									"pm.collectionVariables.set(\"refreshToken\" ,jsonData.refreshToken);\r",
+									"pm.collectionVariables.set(\"sid\" , jsonData.sid);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{Email}}\",\r\n    \"password\": \"{{Password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://kapusta-backend.goit.global/auth/login",
+							"protocol": "https",
+							"host": [
+								"kapusta-backend",
+								"goit",
+								"global"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LogOut",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://kapusta-backend.goit.global/auth/logout",
+							"protocol": "https",
+							"host": [
+								"kapusta-backend",
+								"goit",
+								"global"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RefreshTokens",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"jsonData = pm.response.json();\r",
+									"\r",
+									"pm.collectionVariables.set(\"accessToken\" ,jsonData.newAccessToken);\r",
+									"pm.collectionVariables.set(\"refreshToken\" ,jsonData.newRefreshToken);\r",
+									"pm.collectionVariables.set(\"sid\" , jsonData.newSid);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"sid\": \"{{sid}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://kapusta-backend.goit.global/auth/refresh",
+							"protocol": "https",
+							"host": [
+								"kapusta-backend",
+								"goit",
+								"global"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transaction",
+			"item": [
+				{
+					"name": "Add an income",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"Income description\",\r\n  \"amount\": 100,\r\n  \"date\": \"2023-12-31\",\r\n  \"category\": \"З/П\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://kapusta-backend.goit.global/transaction/income",
+							"protocol": "https",
+							"host": [
+								"kapusta-backend",
+								"goit",
+								"global"
+							],
+							"path": [
+								"transaction",
+								"income"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Income Stats",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://kapusta-backend.goit.global/transaction/income",
+							"protocol": "https",
+							"host": [
+								"kapusta-backend",
+								"goit",
+								"global"
+							],
+							"path": [
+								"transaction",
+								"income"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add an Expense",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"Expense description\",\r\n  \"amount\": 100,\r\n  \"date\": \"2020-12-31\",\r\n  \"category\": \"Продукты\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://kapusta-backend.goit.global/transaction/expense",
+							"protocol": "https",
+							"host": [
+								"kapusta-backend",
+								"goit",
+								"global"
+							],
+							"path": [
+								"transaction",
+								"expense"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get an Expense Stats",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://kapusta-backend.goit.global/transaction/expense",
+							"protocol": "https",
+							"host": [
+								"kapusta-backend",
+								"goit",
+								"global"
+							],
+							"path": [
+								"transaction",
+								"expense"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://kapusta-backend.goit.global/transaction/652d7860eb03bb3d987a9b91",
+							"protocol": "https",
+							"host": [
+								"kapusta-backend",
+								"goit",
+								"global"
+							],
+							"path": [
+								"transaction",
+								"652d7860eb03bb3d987a9b91"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get categories for incomes",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://kapusta-backend.goit.global/transaction/income-categories",
+							"protocol": "https",
+							"host": [
+								"kapusta-backend",
+								"goit",
+								"global"
+							],
+							"path": [
+								"transaction",
+								"income-categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get categories for expenses",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://kapusta-backend.goit.global/transaction/expense-categories",
+							"protocol": "https",
+							"host": [
+								"kapusta-backend",
+								"goit",
+								"global"
+							],
+							"path": [
+								"transaction",
+								"expense-categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Specific period of transactions",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://kapusta-backend.goit.global/transaction/period-data?date=2023-03",
+							"protocol": "https",
+							"host": [
+								"kapusta-backend",
+								"goit",
+								"global"
+							],
+							"path": [
+								"transaction",
+								"period-data"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2023-03"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Update User's Balance",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"newBalance\": 1000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://kapusta-backend.goit.global/user/balance",
+							"protocol": "https",
+							"host": [
+								"kapusta-backend",
+								"goit",
+								"global"
+							],
+							"path": [
+								"user",
+								"balance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All User Info",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://kapusta-backend.goit.global/user",
+							"protocol": "https",
+							"host": [
+								"kapusta-backend",
+								"goit",
+								"global"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "UserName",
+			"value": ""
+		},
+		{
+			"key": "Password",
+			"value": ""
+		},
+		{
+			"key": "Email",
+			"value": ""
+		},
+		{
+			"key": "UserId",
+			"value": ""
+		},
+		{
+			"key": "accessToken",
+			"value": ""
+		},
+		{
+			"key": "refreshToken",
+			"value": ""
+		},
+		{
+			"key": "sid",
+			"value": ""
+		}
+	]
+}
